@@ -60,6 +60,14 @@ The items in the database will be:
 
 ## Business Rules
 
+- A Customer can only place an Order at a Store for Items that are in stock
+  positive Inventory quantity.
+- All of the Order Items for an Order must be available at the same Store
+- Inventory quantities can never be less than zero.
+- An Order must have at least one Order Item
+- An Order cannot have more than 20 Order Itemss (so that it fits on the old
+  receipt forms)
+
 ## Database Operations
 
 # Out of Scope
