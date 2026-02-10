@@ -19,12 +19,12 @@ My application is a system to track auto parts at stores for comparison shopping
 
 The items in the database will be:
 
-- Customers - name, email address
-- Items - id, description, manufacturer's name
-- Stores - id, name, address
-- Inventories at a Store - item id, store id, quantity, price
-- Orders - id, customer id, store id, total amount
-- Order Items id, order id, item id, quantity, total amount
+- **Customers** - name, email address
+- **Items** - id, description, manufacturer's name
+- **Stores** - id, name, address
+- **Inventories** at a Store - item id, store id, quantity, price
+- **Orders** - id, customer id, store id, total amount
+- **Order Items** - id, order id, item id, quantity, total amount
 
 
 ### Relationships
