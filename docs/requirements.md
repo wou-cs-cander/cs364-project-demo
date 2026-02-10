@@ -17,13 +17,13 @@ My application is a system to track auto parts at stores for comparison shopping
 
 ### Entities
 
-The items in the database will be:
+The entities/tables in the database will be:
 
-- **Customers** - name, email address
+- **Customers** - id, name, email address
 - **Items** - id, description, manufacturer's name
 - **Stores** - id, name, address
 - **Inventories** at a Store - item id, store id, quantity, price
-- **Orders** - id, customer id, store id, total amount
+- **Orders** - id, customer id, store id, total amount, completed
 - **Order Items** - id, order id, item id, quantity, total amount
 
 
@@ -33,6 +33,7 @@ The items in the database will be:
   Item in Inventory of many Stores (1:M). These create a many-to-many (M:M)
   relationship between Stores and Items - many items are in many stores.
 - A Customer places many Orders (1:M).
+- An Order is placed at a Store, and a Store has multiple Orders (1:M).
 - An Order has mutiple Order Items (1:M).
 - An Item can be ordered in multiple Order Items (1:M).
 
@@ -41,7 +42,7 @@ The items in the database will be:
 
 - As a Customer, I want to list available Items, so that I know what I can
   buy.
-- As a Customer, I want to search for an Item by prices at all of the
+- As a Customer, I want to search for an Item by price at all of the
   Stores, so that I can get a deal.
 - As a Customer, I want to see all of the Items at a Store, so that I know
   what to look for at that store.
@@ -51,6 +52,7 @@ The items in the database will be:
   so that I can decide which store to go to.
 - As a Customer, I want a list of Stores ordered by distance from some
   location, so that I can know which stores are closest.
+- As an employee at a Store, I want to see all the unfilled Orders for the Store.
 - As an employee at a Store, I want to fullfill a Customer's order by
   checking the Store's inventory and decreasing the inventory amounts, so
   that the Customer gets their stuff, and the Store can charge them money.
@@ -97,3 +99,4 @@ The items in the database will be:
   likes to shop at.
 - Another unimplemented idea is to restrict the search to a subset of the
   stores based on the Customers's preferences.
+- There will not be any search feature based on distance to stores.
