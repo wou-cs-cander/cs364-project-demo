@@ -97,3 +97,15 @@ INSERT INTO Inventories(ItemId,StoreId,Quantity,Price) VALUES (15,2,1,69.99);
 INSERT INTO Inventories(ItemId,StoreId,Quantity,Price) VALUES (14,3,1,66.22);
 INSERT INTO Inventories(ItemId,StoreId,Quantity,Price) VALUES (11,2,1,123.99);
 
+
+-- add foreign key constraints after adding all the data
+ALTER TABLE Inventories  WITH NOCHECK ADD  CONSTRAINT FK_Inventories_Stores FOREIGN KEY(StoreId)
+REFERENCES Stores (StoreId)
+GO
+
+ALTER TABLE Inventories  WITH NOCHECK ADD  CONSTRAINT FK_Inventories_Items FOREIGN KEY(ItemId)
+REFERENCES Items (ItemId)
+GO
+ALTER TABLE Inventories  WITH NOCHECK ADD  CONSTRAINT FK_Inventories_stores FOREIGN KEY(StoreId)
+REFERENCES Stores (StoreId)
+GO
