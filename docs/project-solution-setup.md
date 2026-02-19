@@ -73,9 +73,9 @@ dotnet add db.ado/db.ado.csproj package Microsoft.Data.SqlClient
 ### `db.efc` — needs EF Core and its SQL Server provider
 
 ```bash
-dotnet add db.efc/db.efc.csproj package Microsoft.EntityFrameworkCore
-dotnet add db.efc/db.efc.csproj package Microsoft.EntityFrameworkCore.SqlServer
-dotnet add db.efc/db.efc.csproj package Microsoft.EntityFrameworkCore.Design
+dotnet add db.efc/db.efc.csproj package Microsoft.EntityFrameworkCore --version 9.0.13
+dotnet add db.efc/db.efc.csproj package Microsoft.EntityFrameworkCore.SqlServer --version 9.0.13
+dotnet add db.efc/db.efc.csproj package Microsoft.EntityFrameworkCore.Design --version 9.0.13
 ```
 
 > `Microsoft.EntityFrameworkCore.Design` is needed if you plan to use EF migrations (`dotnet ef migrations add ...`).

@@ -18,4 +18,10 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\models\models.csproj" />
+    <ProjectReference Include="..\db.ado\db.ado.csproj" />
+    <ProjectReference Include="..\db.efc\db.efc.csproj" />
+  </ItemGroup>
+
 </Project>

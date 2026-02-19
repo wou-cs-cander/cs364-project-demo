@@ -1,5 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\models\models.csproj" />
+    <ProjectReference Include="..\db.ado\db.ado.csproj" />
+    <ProjectReference Include="..\db.efc\db.efc.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
