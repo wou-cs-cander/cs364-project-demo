@@ -46,7 +46,7 @@ INSERT INTO Items(Description,MgfName,Year) VALUES ('Engine','Subaru',2005);
 
 
 CREATE TABLE Customers (
-   ItemID  int IDENTITY(1,1) NOT NULL PRIMARY KEY
+   CustomerID  int IDENTITY(1,1) NOT NULL PRIMARY KEY
    ,Name  VARCHAR(40) NOT NULL
   ,Email VARCHAR(50) NOT NULL
 );
@@ -105,7 +105,4 @@ GO
 
 ALTER TABLE Inventories  WITH NOCHECK ADD  CONSTRAINT FK_Inventories_Items FOREIGN KEY(ItemId)
 REFERENCES Items (ItemId)
-GO
-ALTER TABLE Inventories  WITH NOCHECK ADD  CONSTRAINT FK_Inventories_stores FOREIGN KEY(StoreId)
-REFERENCES Stores (StoreId)
 GO
