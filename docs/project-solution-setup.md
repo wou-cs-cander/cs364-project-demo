@@ -71,6 +71,7 @@ dotnet add db.ado/db.ado.csproj package Microsoft.Data.SqlClient
 ```
 
 ### `db.efc` — needs EF Core and its SQL Server provider
+We are specifying the version (9.0.13) to be compatible with version 9.0 of .NET that we're running.
 
 ```bash
 dotnet add db.efc/db.efc.csproj package Microsoft.EntityFrameworkCore --version 9.0.13
