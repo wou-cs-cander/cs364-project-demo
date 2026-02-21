@@ -21,8 +21,14 @@ class Program
 
         CustomerRepository repository = new CustomerRepository(connStr);
 
-        var Customer = repository.GetById(1);
-        Console.WriteLine($"Customer: {Customer.Name} ({Customer.Email})");
+        var cust = repository.GetById(1);
+        Console.WriteLine($"Customer #1: {cust}");
+
+        var customers = repository.GetAll();
+        foreach (var c in customers)
+        {
+            Console.WriteLine($"Customer {c.CustomerId}: {c.Name} ({c.Email})");
+        }
     }
 
     static void TestConnection(string connectionString)
