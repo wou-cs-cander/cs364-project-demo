@@ -27,7 +27,7 @@ public class CustomerRepository : IRepository<Customer>
 
         // Otherwise, get the ID of the newly inserted customer
         var id = (int)command.ExecuteScalar();
-        entity.Id = id;
+        entity.CustomerId = id;
 
         connection.Close();
     }
@@ -60,7 +60,7 @@ public class CustomerRepository : IRepository<Customer>
         {
             var customer = new Customer
             {
-                Id = (int)reader["CustomerId"],
+                CustomerId = (int)reader["CustomerId"],
                 Name = reader["Name"] as string,
                 Email = reader["Email"] as string
             };
@@ -86,7 +86,7 @@ public class CustomerRepository : IRepository<Customer>
 
         var customer = new Customer
         {
-            Id = (int)reader["CustomerId"],
+            CustomerId = (int)reader["CustomerId"],
             Name = reader["Name"] as string,
             Email = reader["Email"] as string,
         };
@@ -104,7 +104,7 @@ public class CustomerRepository : IRepository<Customer>
         using var connection = new SqlConnection(_connectionString);
         var command = new SqlCommand(sql, connection);
 
-        command.Parameters.AddWithValue("@Id", entity.Id);
+        command.Parameters.AddWithValue("@Id", entity.CustomerId);
         command.Parameters.AddWithValue("@Name", entity.Name);
         command.Parameters.AddWithValue("@Email", entity.Email);
 
