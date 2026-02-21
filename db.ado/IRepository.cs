@@ -1,6 +1,6 @@
 using Models;
 
-namespace Ado.Db;
+namespace Db.Ado;
 
 public interface IRepository<T> where T : EntityBase
 {

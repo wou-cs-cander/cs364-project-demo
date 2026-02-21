@@ -39,7 +39,7 @@ dotnet new classlib -n db.efc -f net9.0
 ### `demo` — Console application
 
 ```bash
-dotnet new console -n demo -f net9.0
+dotnet new console -n demo -f net9.0 --use-program-main
 ```
 
 ### `test` — xUnit test project

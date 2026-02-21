@@ -2,7 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Models;
 
-namespace Ado.Db;
+namespace Db.Ado;
 
 public class CustomerRepository : IRepository<Customer>
 {
@@ -16,7 +16,7 @@ public class CustomerRepository : IRepository<Customer>
         using var connection = new SqlConnection(_connectionString);
 
         var sql = @"INSERT INTO Customers ([Name], [Email])
-                    OUTPUT INSERTED.[Id]
+                    OUTPUT INSERTED.[CustomerId]
                     VALUES (@Name, @Email);";
         var command = new SqlCommand(sql, connection);
 
@@ -36,7 +36,7 @@ public class CustomerRepository : IRepository<Customer>
     {
         using var connection = new SqlConnection(_connectionString);
 
-        var sql = "DELETE FROM Customers WHERE [Id] = @Id;";
+        var sql = "DELETE FROM Customers WHERE [CustomerId] = @Id;";
         var command = new SqlCommand(sql, connection);
         command.Parameters.AddWithValue("@Id", id);
 
@@ -60,7 +60,7 @@ public class CustomerRepository : IRepository<Customer>
         {
             var customer = new Customer
             {
-                Id = (int)reader["Id"],
+                Id = (int)reader["CustomerId"],
                 Name = reader["Name"] as string,
                 Email = reader["Email"] as string
             };
@@ -76,7 +76,7 @@ public class CustomerRepository : IRepository<Customer>
     {
         using var connection = new SqlConnection(_connectionString);
 
-        var command = new SqlCommand("SELECT * FROM Customers WHERE [Id] = @Id;", connection);
+        var command = new SqlCommand("SELECT * FROM Customers WHERE [CustomerId] = @Id;", connection);
         command.Parameters.AddWithValue("@Id", id);
 
         connection.Open();
@@ -86,7 +86,7 @@ public class CustomerRepository : IRepository<Customer>
 
         var customer = new Customer
         {
-            Id = (int)reader["Id"],
+            Id = (int)reader["CustomerId"],
             Name = reader["Name"] as string,
             Email = reader["Email"] as string,
         };
@@ -99,7 +99,7 @@ public class CustomerRepository : IRepository<Customer>
         var sql = @"UPDATE Customers
                     SET [Name] = @Name,
                         [Email] = @Email,
-                    WHERE [Id] = @Id;";
+                    WHERE [CustomerId] = @Id;";
 
         using var connection = new SqlConnection(_connectionString);
         var command = new SqlCommand(sql, connection);
