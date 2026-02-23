@@ -18,17 +18,9 @@ class Program
         string connStr = "Server=localhost;User Id=SA;Password=reallyStrongPwd123;TrustServerCertificate=true;Initial Catalog=PartStore";
 
         // TestConnection(connStr);
+        // TestCustomerRepo(connStr);
+        TestCustomersViaContext(connStr);
 
-        CustomerRepository repository = new CustomerRepository(connStr);
-
-        var cust = repository.GetById(1);
-        Console.WriteLine($"Customer #1: {cust}");
-
-        var customers = repository.GetAll();
-        foreach (var c in customers)
-        {
-            Console.WriteLine($"Customer {c.CustomerId}: {c.Name} ({c.Email})");
-        }
     }
 
     static void TestConnection(string connectionString)
@@ -44,7 +36,31 @@ class Program
 
         Console.WriteLine("ConnectionString: {0}",
             connection.ConnectionString);
+    }
 
+    static void TestCustomerRepo(string connStr)
+    {
+        Console.WriteLine("Listing Customers via CustomerRepository...");
+        CustomerRepository repository = new CustomerRepository(connStr);
 
+        var cust = repository.GetById(1);
+        Console.WriteLine($"Customer #1: {cust}");
+
+        var customers = repository.GetAll();
+        foreach (var c in customers)
+        {
+            Console.WriteLine($"Customer {c.CustomerId}: {c.Name} ({c.Email})");
+        }
+    }
+
+    static void TestCustomersViaContext(string connStr)
+    {
+        Console.WriteLine("Listing Customers via PartStoreContext...");
+        var PartStoreContext = new PartStoreContext(connStr);
+        var customers = PartStoreContext.Customers.ToList();
+        foreach (var c in customers)
+        {
+            Console.WriteLine($"Customer {c.CustomerId}: {c.Name} ({c.Email})");
+        }
     }
 }
