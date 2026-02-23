@@ -19,7 +19,8 @@ class Program
 
         // TestConnection(connStr);
         // TestCustomerRepo(connStr);
-        TestCustomersViaContext(connStr);
+        // TestCustomersViaContext(connStr);
+        TestStoresViaContext(connStr);
 
     }
 
@@ -56,11 +57,22 @@ class Program
     static void TestCustomersViaContext(string connStr)
     {
         Console.WriteLine("Listing Customers via PartStoreContext...");
-        var PartStoreContext = new PartStoreContext(connStr);
+        using var PartStoreContext = new PartStoreContext(connStr);
         var customers = PartStoreContext.Customers.ToList();
         foreach (var c in customers)
         {
             Console.WriteLine($"Customer {c.CustomerId}: {c.Name} ({c.Email})");
+        }
+    }
+
+    static void TestStoresViaContext(string connStr)
+    {
+        Console.WriteLine("Listing Stores via PartStoreContext...");
+        using var PartStoreContext = new PartStoreContext(connStr);
+        var stores = PartStoreContext.Stores.ToList();
+        foreach (var s in stores)
+        {
+            Console.WriteLine($"Store {s.StoreId}: {s.StoreName} ({s.Address})");
         }
     }
 }
