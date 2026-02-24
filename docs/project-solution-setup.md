@@ -14,9 +14,13 @@ dotnet new sln -n MyApp
 This creates `MyApp.sln` in the current directory. All projects will live here alongside it.
 (Please use a better name than `MyApp`.)
 
+All commands below are run from the top-level of your project repository.
+
 ---
 
 ## 2. Create the Projects
+
+We're specifying .NET version 9 for consistency.
 
 ### `models` — Plain class library, no special dependencies
 
@@ -79,8 +83,6 @@ dotnet add db.efc/db.efc.csproj package Microsoft.EntityFrameworkCore.SqlServer 
 dotnet add db.efc/db.efc.csproj package Microsoft.EntityFrameworkCore.Design --version 9.0.13
 ```
 
-> `Microsoft.EntityFrameworkCore.Design` is needed if you plan to use EF migrations (`dotnet ef migrations add ...`).
-
 ---
 
 ## 5. Wire Up Project References
@@ -107,8 +109,6 @@ dotnet add test/test.csproj reference models/models.csproj
 dotnet add test/test.csproj reference db.ado/db.ado.csproj
 dotnet add test/test.csproj reference db.efc/db.efc.csproj
 ```
-
-> The `xunit` template already includes the `xunit` and `xunit.runner.visualstudio` packages. No extra steps needed for the test runner.
 
 ---
 
@@ -142,7 +142,13 @@ You can confirm everything resolves correctly by building the whole solution:
 dotnet build
 ```
 
-And run the tests with:
+And the hello world program with:
+
+```bash
+dotnet run --project demo
+```
+
+And run the (useless/empty) tests with:
 
 ```bash
 dotnet test
