@@ -142,7 +142,7 @@ You can confirm everything resolves correctly by building the whole solution:
 dotnet build
 ```
 
-And the hello world program with:
+And run the hello world program with:
 
 ```bash
 dotnet run --project demo
