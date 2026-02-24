@@ -18,12 +18,14 @@ class Program
         string connStr = "Server=localhost;User Id=SA;Password=reallyStrongPwd123;TrustServerCertificate=true;Initial Catalog=PartStore";
 
         // TestConnection(connStr);
-        // TestCustomerRepo(connStr);
-        // TestCustomersViaContext(connStr);
+        TestCustomerRepo(connStr);
+        TestCustomersViaContext(connStr);
         TestStoresViaContext(connStr);
 
     }
 
+    // Just a quick test to see if we can connect to the database and get some info about the connection.
+    // I used it while debugging issues with my connection string and database setup.
     static void TestConnection(string connectionString)
     {
         using var connection = new SqlConnection(connectionString);
