@@ -4,18 +4,14 @@
 using Db.Ado;
 using Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
 class Program
 {
     static void Main(string[] args)
     {
         Console.WriteLine("Hello, World!");
-
-        // NEVER hardcode the connection string in your code like this. This is just for demo purposes.
-        // My connection string is for SQL Server running in a Docker container on my local machine.
-        // You will need to change this to match your own database connection string.
-        // The Initial Catalog is the name of the database you want to connect to. In this case, it's "PartStore".
-        string connStr = "Server=localhost;User Id=SA;Password=reallyStrongPwd123;TrustServerCertificate=true;Initial Catalog=PartStore";
+        string connStr = GetConnectionString(args);
 
         // TestConnection(connStr);
         TestCustomerRepo(connStr);
@@ -76,5 +72,32 @@ class Program
         {
             Console.WriteLine($"Store {s.StoreId}: {s.StoreName} ({s.Address})");
         }
+    }
+
+    // This is the "fancy" way to get a DB connection string.
+    // Students can just hard-code the connection string if they want for simplicity's sake,
+    // but this is a more flexible approach that allows for multiple configuration sources (appsettings.json, user secrets, environment variables, command-line args).
+    static string GetConnectionString(string[] args)
+    {
+        var config = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+            .AddEnvironmentVariables()
+            .AddUserSecrets<Program>(optional: true)
+            .AddCommandLine(args)
+            .Build();
+
+        string? connStr =
+            config.GetConnectionString("PartStore")
+            ?? config["ConnectionStrings:PartStore"]
+            ?? config["PARTSTORE_CONNECTION_STRING"];
+
+        if (string.IsNullOrWhiteSpace(connStr))
+        {
+            throw new InvalidOperationException(
+                "Connection string not found. Configure 'ConnectionStrings:PartStore' via user secrets, appsettings.json, or environment variable 'PARTSTORE_CONNECTION_STRING'.");
+        }
+
+        return connStr;
     }
 }
