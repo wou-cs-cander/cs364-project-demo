@@ -1,10 +1,10 @@
 ﻿namespace Demo;
 
-//using System.Runtime.CompilerServices;
 using Db.Ado;
 using Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 class Program
 {
@@ -14,9 +14,10 @@ class Program
         string connStr = GetConnectionString(args);
 
         // TestConnection(connStr);
-        TestCustomerRepo(connStr);
-        TestCustomersViaContext(connStr);
-        TestStoresViaContext(connStr);
+        ListCustomersViaRepo(connStr);
+        ListCustomersViaContext(connStr);
+        ListStoresViaContext(connStr);
+        ListInventoriesViaContext(connStr);
 
     }
 
@@ -37,7 +38,7 @@ class Program
             connection.ConnectionString);
     }
 
-    static void TestCustomerRepo(string connStr)
+    static void ListCustomersViaRepo(string connStr)
     {
         Console.WriteLine("Listing Customers via CustomerRepository...");
         CustomerRepository repository = new CustomerRepository(connStr);
@@ -52,28 +53,51 @@ class Program
         }
     }
 
-    static void TestCustomersViaContext(string connStr)
+    static void ListCustomersViaContext(string connStr)
     {
         Console.WriteLine("Listing Customers via PartStoreContext...");
-        using var PartStoreContext = new PartStoreContext(connStr);
-        var customers = PartStoreContext.Customers.ToList();
-        foreach (var c in customers)
+        using (var context = new PartStoreContext(connStr))
         {
-            Console.WriteLine($"Customer {c.CustomerId}: {c.Name} ({c.Email})");
+            var customers = context.Customers.ToList();
+            foreach (var c in customers)
+            {
+                Console.WriteLine($"Customer {c.CustomerId}: {c.Name} ({c.Email})");
+            }
         }
     }
 
-    static void TestStoresViaContext(string connStr)
+    static void ListStoresViaContext(string connStr)
     {
         Console.WriteLine("Listing Stores via PartStoreContext...");
-        using var PartStoreContext = new PartStoreContext(connStr);
-        var stores = PartStoreContext.Stores.ToList();
-        foreach (var s in stores)
+        using (var context = new PartStoreContext(connStr))
         {
-            Console.WriteLine($"Store {s.StoreId}: {s.StoreName} ({s.Address})");
+            var stores = context.Stores.ToList();
+            foreach (var s in stores)
+            {
+                Console.WriteLine($"Store {s.StoreId}: {s.StoreName} ({s.Address})");
+            }
         }
     }
 
+    static void ListInventoriesViaContext(string connStr)
+    {
+        Console.WriteLine("Listing Inventories via PartStoreContext...");
+        using (var context = new PartStoreContext(connStr))
+        {
+            // NB: need to use Include() to eagerly load the related Item and Store entities,
+            // otherwise they will be null.  The alternative is to use lazy loading proxies
+            // in the DbContext configuration.
+            var inventories = context.Inventories
+                            .Include(i => i.Item).Include(i => i.Store)
+                            .ToList();
+            foreach (var i in inventories)
+            {
+                Console.WriteLine($"Inventory {i.InventoryId}: {i.Item.Description} at {i.Store.StoreName} Store - Price: {i.Price:F2}");
+            }
+        }
+    }
+
+    //
     // This is the "fancy" way to get a DB connection string.
     // Students can just hard-code the connection string if they want for simplicity's sake,
     // but this is a more flexible approach that allows for multiple configuration sources (appsettings.json, user secrets, environment variables, command-line args).

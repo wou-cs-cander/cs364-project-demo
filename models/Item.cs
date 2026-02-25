@@ -14,4 +14,9 @@ public partial class Item
     public int Year { get; set; }
 
     public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
+
+    public override string ToString()
+    {
+        return $"{MgfName} -  {Description}";
+    }
 }

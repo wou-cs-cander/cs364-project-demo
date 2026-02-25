@@ -12,10 +12,12 @@ public partial class PartStoreContext : DbContext
         _ConnectionString = connectionString;
     }
 
+    /*
     public PartStoreContext(DbContextOptions<PartStoreContext> options)
         : base(options)
     {
     }
+    */
 
     public virtual DbSet<Customer> Customers { get; set; }
 
