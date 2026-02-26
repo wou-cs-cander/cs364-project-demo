@@ -4,6 +4,11 @@ using Db.Ado;
 using Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+// If you get an error message like:
+// DbSet<Inventory>' does not contain a definition for 'Include' and no
+// accessible extension method 'Include' accepting a first argument of type
+// 'DbSet<Inventory>' could be found ...
+// you need EntityFrameworkCore below
 using Microsoft.EntityFrameworkCore;
 
 class Program
