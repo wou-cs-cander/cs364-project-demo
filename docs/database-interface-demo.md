@@ -54,9 +54,15 @@ Inventory 19: Hubcap at Portland Store - Price: 66.22
 Inventory 20: Starter Motor at Salem Store - Price: 123.99
 
 === CRUD Operations via CustomerRepository ===
-Created customer with ID: 10, Name: Test Customer, Email: test.customer@example.com
-Retrieved customer: ID: 10, Name: Test Customer, Email: test.customer@example.com
+Created customer with ID: 15, Name: Test Customer, Email: test.customer@example.com
+Retrieved customer: ID: 15, Name: Test Customer, Email: test.customer@example.com
 Updated customer name to: Updated Test Customer
 Verified update - Customer name is now: Updated Test Customer
-Deleted customer with ID: 10
-```
+Deleted customer with ID: 15
+
+=== CRUD Operations via PartStoreContext ===
+Created customer with ID: 16, Name: Context Test Customer, Email: context.test.customer@example.com
+Retrieved customer: ID: 16, Name: Context Test Customer, Email: context.test.customer@example.com
+Updated customer name to: Updated Context Test Customer
+Verified update - Customer name is now: Updated Context Test Customer
+Deleted customer with ID: 16

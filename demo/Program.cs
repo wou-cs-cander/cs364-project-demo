@@ -24,6 +24,7 @@ class Program
         ListStoresViaContext(connStr);
         ListInventoriesViaContext(connStr);
         DemoCrudOperationsViaRepo(connStr);
+        DemoCrudOperationsViaContext(connStr);
     }
 
     // Just a quick test to see if we can connect to the database and get some info about the connection.
@@ -132,6 +133,50 @@ class Program
         // DELETE: Remove the test customer
         repository.Delete(updatedCustomer.CustomerId);
         Console.WriteLine($"Deleted customer with ID: {updatedCustomer.CustomerId}");
+    }
+
+    static void DemoCrudOperationsViaContext(string connStr)
+    {
+        Console.WriteLine("\n=== CRUD Operations via PartStoreContext ===");
+
+        using (var context = new PartStoreContext(connStr))
+        {
+            var newCustomer = new Customer
+            {
+                Name = "Context Test Customer",
+                Email = "context.test.customer@example.com"
+            };
+
+            context.Customers.Add(newCustomer);
+            context.SaveChanges();
+            Console.WriteLine($"Created customer with ID: {newCustomer.CustomerId}, Name: {newCustomer.Name}, Email: {newCustomer.Email}");
+
+            var retrievedCustomer = context.Customers.FirstOrDefault(c => c.CustomerId == newCustomer.CustomerId);
+            if (retrievedCustomer is null)
+            {
+                Console.WriteLine("Unable to read newly created customer.");
+                return;
+            }
+
+            Console.WriteLine($"Retrieved customer: ID: {retrievedCustomer.CustomerId}, Name: {retrievedCustomer.Name}, Email: {retrievedCustomer.Email}");
+
+            retrievedCustomer.Name = "Updated Context Test Customer";
+            context.SaveChanges();
+            Console.WriteLine($"Updated customer name to: {retrievedCustomer.Name}");
+
+            var updatedCustomer = context.Customers.FirstOrDefault(c => c.CustomerId == retrievedCustomer.CustomerId);
+            if (updatedCustomer is null)
+            {
+                Console.WriteLine("Unable to re-read updated customer.");
+                return;
+            }
+
+            Console.WriteLine($"Verified update - Customer name is now: {updatedCustomer.Name}");
+
+            context.Customers.Remove(updatedCustomer);
+            context.SaveChanges();
+            Console.WriteLine($"Deleted customer with ID: {updatedCustomer.CustomerId}");
+        }
     }
 
     //
