@@ -98,7 +98,7 @@ public class CustomerRepository : IRepository<Customer>
     {
         var sql = @"UPDATE Customers
                     SET [Name] = @Name,
-                        [Email] = @Email,
+                        [Email] = @Email
                     WHERE [CustomerId] = @Id;";
 
         using var connection = new SqlConnection(_connectionString);

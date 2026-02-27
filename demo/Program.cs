@@ -23,7 +23,7 @@ class Program
         ListCustomersViaContext(connStr);
         ListStoresViaContext(connStr);
         ListInventoriesViaContext(connStr);
-
+        DemoCrudOperationsViaRepo(connStr);
     }
 
     // Just a quick test to see if we can connect to the database and get some info about the connection.
@@ -45,7 +45,7 @@ class Program
 
     static void ListCustomersViaRepo(string connStr)
     {
-        Console.WriteLine("Listing Customers via CustomerRepository...");
+        Console.WriteLine("\n=== Listing Customers via CustomerRepository...");
         CustomerRepository repository = new CustomerRepository(connStr);
 
         var cust = repository.GetById(1);
@@ -60,7 +60,7 @@ class Program
 
     static void ListCustomersViaContext(string connStr)
     {
-        Console.WriteLine("Listing Customers via PartStoreContext...");
+        Console.WriteLine("\n=== Listing Customers via PartStoreContext...");
         using (var context = new PartStoreContext(connStr))
         {
             var customers = context.Customers.ToList();
@@ -73,7 +73,7 @@ class Program
 
     static void ListStoresViaContext(string connStr)
     {
-        Console.WriteLine("Listing Stores via PartStoreContext...");
+        Console.WriteLine("\n=== Listing Stores via PartStoreContext...");
         using (var context = new PartStoreContext(connStr))
         {
             var stores = context.Stores.ToList();
@@ -86,7 +86,7 @@ class Program
 
     static void ListInventoriesViaContext(string connStr)
     {
-        Console.WriteLine("Listing Inventories via PartStoreContext...");
+        Console.WriteLine("\n=== Listing Inventories via PartStoreContext...");
         using (var context = new PartStoreContext(connStr))
         {
             // NB: need to use Include() to eagerly load the related Item and Store entities,
@@ -100,6 +100,38 @@ class Program
                 Console.WriteLine($"Inventory {i.InventoryId}: {i.Item.Description} at {i.Store.StoreName} Store - Price: {i.Price:F2}");
             }
         }
+    }
+
+    static void DemoCrudOperationsViaRepo(string connStr)
+    {
+        Console.WriteLine("\n=== CRUD Operations via CustomerRepository ===");
+        CustomerRepository repository = new CustomerRepository(connStr);
+
+        // CREATE: Add a new customer
+        var newCustomer = new Customer
+        {
+            Name = "Test Customer",
+            Email = "test.customer@example.com"
+        };
+        repository.Add(newCustomer);
+        Console.WriteLine($"Created customer with ID: {newCustomer.CustomerId}, Name: {newCustomer.Name}, Email: {newCustomer.Email}");
+
+        // READ: Get the customer back from the database
+        var retrievedCustomer = repository.GetById(newCustomer.CustomerId);
+        Console.WriteLine($"Retrieved customer: ID: {retrievedCustomer.CustomerId}, Name: {retrievedCustomer.Name}, Email: {retrievedCustomer.Email}");
+
+        // UPDATE: Change the customer's name
+        retrievedCustomer.Name = "Updated Test Customer";
+        repository.Update(retrievedCustomer);
+        Console.WriteLine($"Updated customer name to: {retrievedCustomer.Name}");
+
+        // READ: Verify the update
+        var updatedCustomer = repository.GetById(retrievedCustomer.CustomerId);
+        Console.WriteLine($"Verified update - Customer name is now: {updatedCustomer.Name}");
+
+        // DELETE: Remove the test customer
+        repository.Delete(updatedCustomer.CustomerId);
+        Console.WriteLine($"Deleted customer with ID: {updatedCustomer.CustomerId}");
     }
 
     //
