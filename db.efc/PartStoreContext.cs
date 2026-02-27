@@ -12,13 +12,6 @@ public partial class PartStoreContext : DbContext
         _ConnectionString = connectionString;
     }
 
-    /*
-    public PartStoreContext(DbContextOptions<PartStoreContext> options)
-        : base(options)
-    {
-    }
-    */
-
     public virtual DbSet<Customer> Customers { get; set; }
 
     public virtual DbSet<Inventory> Inventories { get; set; }
@@ -27,6 +20,11 @@ public partial class PartStoreContext : DbContext
 
     public virtual DbSet<Store> Stores { get; set; }
 
+    // If you want EFC to automatically fetch referenced objects without
+    // having to explicitly Include them in the original query, you can
+    // enable lazy loading with:
+    //         => optionsBuilder.UseLazyLoadingProxies()
+    // The problem is then you're inviting N+1 queries
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer(_ConnectionString);
 
