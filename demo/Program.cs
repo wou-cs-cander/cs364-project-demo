@@ -19,7 +19,8 @@ class Program
     static void RunApplication(string connectionString)
     {
         var appLogic = new AppLogic(connectionString);
-        appLogic.Hello();
+
+        int newCustomerId = appLogic.AddCustomer("Testy McTestFace", "test@test.com");
     }
 
     static void RunCrudDemo(string connStr)
