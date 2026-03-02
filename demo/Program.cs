@@ -12,7 +12,13 @@ class Program
         string connStr = GetConnectionString(args);
 
         // TestConnection(connStr);
+        RunCrudDemo(connStr);
 
+    }
+
+    static void RunCrudDemo(string connStr)
+    {
+        Console.WriteLine("=== CRUD Demonstration ===");
         var demo = new Demo(connStr);
 
         demo.ListCustomersViaRepo();
@@ -21,6 +27,7 @@ class Program
         demo.ListInventoriesViaContext();
         demo.DemoCrudOperationsViaRepo();
         demo.DemoCrudOperationsViaContext();
+
     }
 
     // Just a quick test to see if we can connect to the database and get some info about the connection.
