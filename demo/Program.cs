@@ -12,8 +12,14 @@ class Program
         string connStr = GetConnectionString(args);
 
         // TestConnection(connStr);
-        RunCrudDemo(connStr);
+        // RunCrudDemo(connStr);
+        RunApplication(connStr);
+    }
 
+    static void RunApplication(string connectionString)
+    {
+        var appLogic = new AppLogic(connectionString);
+        appLogic.Hello();
     }
 
     static void RunCrudDemo(string connStr)
