@@ -21,6 +21,15 @@ class Program
         var appLogic = new AppLogic(connectionString);
 
         int newCustomerId = appLogic.AddCustomer("Testy McTestFace", "test@test.com");
+        if (newCustomerId < 0)
+        {
+            Console.WriteLine("Failed to add customer. Aborting further operations.");
+            return;
+        }
+
+        appLogic.SearchForItemInventory(1);
+
+        appLogic.DeleteCustomer(newCustomerId);
     }
 
     static void RunCrudDemo(string connStr)
