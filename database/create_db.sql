@@ -97,6 +97,22 @@ INSERT INTO Inventories(ItemId,StoreId,Quantity,Price) VALUES (15,2,1,69.99);
 INSERT INTO Inventories(ItemId,StoreId,Quantity,Price) VALUES (14,3,1,66.22);
 INSERT INTO Inventories(ItemId,StoreId,Quantity,Price) VALUES (11,2,1,123.99);
 
+CREATE TABLE Orders (
+   OrderId     INTEGER IDENTITY(1,1) NOT NULL PRIMARY KEY,
+   CustomerID INTEGER NOT NULL,
+   StoreID     INTEGER  NOT NULL,
+   TotalAmount MONEY NOT NULL,
+   Completed   TINYINT DEFAULT 0
+);
+
+CREATE TABLE OrderItems (
+   OrderItemId     INTEGER IDENTITY(1,1) NOT NULL PRIMARY KEY,
+   OrderId     INTEGER NOT NULL,
+   ItemID INTEGER NOT NULL,
+   Quantity INTEGER NOT NULL,
+   TotalAmount MONEY NOT NULL
+);
+
 
 -- add foreign key constraints after adding all the data
 ALTER TABLE Inventories  WITH NOCHECK ADD  CONSTRAINT FK_Inventories_Stores FOREIGN KEY(StoreId)
@@ -105,4 +121,20 @@ GO
 
 ALTER TABLE Inventories  WITH NOCHECK ADD  CONSTRAINT FK_Inventories_Items FOREIGN KEY(ItemId)
 REFERENCES Items (ItemId)
+GO
+
+ALTER TABLE Orders  WITH NOCHECK ADD  CONSTRAINT FK_OrdersCustomers FOREIGN KEY(CustomerID)
+REFERENCES Customers (CustomerID)
+GO
+
+ALTER TABLE Orders  WITH NOCHECK ADD  CONSTRAINT FK_OrdersStores FOREIGN KEY(StoreID)
+REFERENCES Stores (StoreID)
+GO
+
+ALTER TABLE OrderItems  WITH NOCHECK ADD  CONSTRAINT FK_OrdersItemsOrders FOREIGN KEY(OrderID)
+REFERENCES Orders (OrderID)
+GO
+
+ALTER TABLE OrderItems  WITH NOCHECK ADD  CONSTRAINT FK_OrdersItemsItems FOREIGN KEY(ItemID)
+REFERENCES Items (ItemID)
 GO

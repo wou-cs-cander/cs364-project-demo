@@ -15,6 +15,8 @@ public partial class Item
 
     public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
 
+    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
     public override string ToString()
     {
         return $"{MgfName} -  {Description}";

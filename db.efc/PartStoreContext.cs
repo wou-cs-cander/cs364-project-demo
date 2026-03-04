@@ -18,6 +18,10 @@ public partial class PartStoreContext : DbContext
 
     public virtual DbSet<Item> Items { get; set; }
 
+    public virtual DbSet<Order> Orders { get; set; }
+
+    public virtual DbSet<OrderItem> OrderItems { get; set; }
+
     public virtual DbSet<Store> Stores { get; set; }
 
     // If you want EFC to automatically fetch referenced objects without
@@ -71,6 +75,44 @@ public partial class PartStoreContext : DbContext
             entity.Property(e => e.MgfName)
                 .HasMaxLength(6)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Order>(entity =>
+        {
+            entity.HasKey(e => e.OrderId).HasName("PK__Orders__C3905BCFBAC3D01B");
+
+            entity.Property(e => e.Completed).HasDefaultValue((byte)0);
+            entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+            entity.Property(e => e.StoreId).HasColumnName("StoreID");
+            entity.Property(e => e.TotalAmount).HasColumnType("money");
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.CustomerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OrdersCustomers");
+
+            entity.HasOne(d => d.Store).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.StoreId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OrdersStores");
+        });
+
+        modelBuilder.Entity<OrderItem>(entity =>
+        {
+            entity.HasKey(e => e.OrderItemId).HasName("PK__OrderIte__57ED0681D006B282");
+
+            entity.Property(e => e.ItemId).HasColumnName("ItemID");
+            entity.Property(e => e.TotalAmount).HasColumnType("money");
+
+            entity.HasOne(d => d.Item).WithMany(p => p.OrderItems)
+                .HasForeignKey(d => d.ItemId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OrdersItemsItems");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.OrderItems)
+                .HasForeignKey(d => d.OrderId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OrdersItemsOrders");
         });
 
         modelBuilder.Entity<Store>(entity =>
