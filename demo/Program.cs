@@ -49,8 +49,6 @@ class Program
             return;
         }
 
-        appLogic.SearchForItemInventory(1);
-
         // IDs from the seed data
         const int monmouth = 1;
         const int hubcap = 1;
@@ -58,8 +56,14 @@ class Program
         const int larry = 1;
         List<int> itemIds = new List<int> { hubcap, airfilter };
 
+        Console.WriteLine("\n - ListItemsAtStore - ");
+        appLogic.ListItemsAtStore(monmouth);
+        Console.WriteLine("\n - SearchForItemInventoryr - ");
+        appLogic.SearchForItemInventory(hubcap);
+
         // Don't use newCustomerId for the order since we delete the customer
         // at the end and FK constraints won't allow us to delete a customer with orders.
+        Console.WriteLine("\n - PlaceOrder - ");
         var order = appLogic.PlaceOrder(monmouth, larry, itemIds);
         if (order != null)
         {

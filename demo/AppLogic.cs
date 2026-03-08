@@ -76,6 +76,44 @@ public class AppLogic
         }
     }
 
+    public void ListItemsAtStore(int storeId)
+    {
+        using var context = new PartStoreContext(_connectionString);
+
+        var store = context.Stores.FirstOrDefault(s => s.StoreId == storeId);
+        if (store == null)
+        {
+            Console.WriteLine($"Store with ID {storeId} not found.");
+            return;
+        }
+
+        var itemsAtStore = context.Inventories
+            .Where(i => i.StoreId == storeId)
+            .Include(i => i.Item)
+            .OrderBy(i => i.Item.Description)
+            .Select(i => new
+            {
+                ItemId = i.ItemId,
+                Description = i.Item.Description,
+                Quantity = i.Quantity,
+                Price = i.Price
+            })
+            .ToList();
+
+        if (itemsAtStore.Count == 0)
+        {
+            Console.WriteLine($"No items found at store {store.StoreName} (ID: {storeId}).");
+            return;
+        }
+
+        Console.WriteLine($"Items at store {store.StoreName} (ID: {storeId}):");
+        foreach (var inventory in itemsAtStore)
+        {
+            Console.WriteLine(
+                $"Item {inventory.ItemId}: {inventory.Description}, Quantity: {inventory.Quantity}, Price: ${inventory.Price:F2}");
+        }
+    }
+
     /// <summary>
     /// Place an order at a store for a customer with a list of item IDs.
     /// Will check that the store and customer exist, and that the store has
