@@ -1,15 +1,15 @@
 # Database Interface Demonstration
 
 At this time, I just have a demo program rather than any test cases.
-It lives in the `demo` project, and you can run it with:
+It lives in the `demo` project, and you can run it with the command "demo":
 ```
-dotnet run --project demo
+dotnet run --project demo demo
 ```
 
 ## Sample Output
 
 ```
-dotnet run --project demo
+dotnet run --project demo demo
 Hello, World!
 
 === Listing Customers via CustomerRepository...

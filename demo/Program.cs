@@ -8,13 +8,34 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        if (args.Length != 1)
+        {
+            PrintUsage();
+            return;
+        }
 
-        string connStr = GetConnectionString(args);
+        string command = args[0].Trim().ToLowerInvariant();
+        string connStr = GetConnectionString(Array.Empty<string>());
 
-        // TestConnection(connStr);
-        // RunCrudDemo(connStr);
-        RunApplication(connStr);
+        switch (command)
+        {
+            case "app":
+                RunApplication(connStr);
+                break;
+            case "demo":
+                RunCrudDemo(connStr);
+                break;
+            default:
+                PrintUsage();
+                break;
+        }
+    }
+
+    static void PrintUsage()
+    {
+        Console.WriteLine("Usage: dotnet run --project demo -- <app|demo>");
+        Console.WriteLine("  app  - run the application workflow");
+        Console.WriteLine("  demo - run the CRUD demonstration");
     }
 
     static void RunApplication(string connectionString)
