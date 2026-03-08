@@ -2,6 +2,7 @@
 
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using Models;
 
 class Program
 {
@@ -28,6 +29,25 @@ class Program
         }
 
         appLogic.SearchForItemInventory(1);
+
+        // IDs from the seed data
+        const int monmouth = 1;
+        const int hubcap = 1;
+        const int airfilter = 9;
+        const int larry = 1;
+        List<int> itemIds = new List<int> { hubcap, airfilter };
+
+        // Don't use newCustomerId for the order since we delete the customer
+        // at the end and FK constraints won't allow us to delete a customer with orders.
+        var order = appLogic.PlaceOrder(monmouth, larry, itemIds);
+        if (order != null)
+        {
+            Console.WriteLine($"Order {order.OrderId} placed successfully for customer {larry} at store {monmouth}.");
+        }
+        else
+        {
+            Console.WriteLine("Failed to place order.");
+        }
 
         appLogic.DeleteCustomer(newCustomerId);
     }

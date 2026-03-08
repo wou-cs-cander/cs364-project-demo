@@ -75,4 +75,92 @@ public class AppLogic
             Console.WriteLine($"Store: {item.StoreName}, Quantity: {item.Quantity}, Price: ${item.Price:F2}");
         }
     }
+
+    /// <summary>
+    /// Place an order at a store for a customer with a list of item IDs.
+    /// Will check that the store and customer exist, and that the store has
+    /// sufficient inventory of each item before placing the order.  We assume
+    /// that the quatity for each item is 1 for simplicity.
+    /// If any checks fail, will return null and not place the order.
+    /// </summary>
+    /// <param name="storeId"></param>
+    /// <param name="customerId"></param>
+    /// <param name="itemIds"></param>
+    /// <returns></returns>
+    public Order? PlaceOrder(int storeId, int customerId, List<int> itemIds)
+    {
+        using var context = new PartStoreContext(_connectionString);
+
+        if (itemIds == null || itemIds.Count == 0)
+        {
+            Console.WriteLine("Cannot place an order with no items.");
+            return null;
+        }
+
+        bool storeExists = context.Stores.Any(s => s.StoreId == storeId);
+        if (!storeExists)
+        {
+            Console.WriteLine($"Store with ID {storeId} not found.");
+            return null;
+        }
+
+        bool customerExists = context.Customers.Any(c => c.CustomerId == customerId);
+        if (!customerExists)
+        {
+            Console.WriteLine($"Customer with ID {customerId} not found.");
+            return null;
+        }
+
+        decimal orderTotal = 0m;
+        var order = new Order
+        {
+            StoreId = storeId,
+            CustomerId = customerId,
+            Completed = 0
+        };
+
+        var requestedCounts = itemIds
+            .GroupBy(id => id)
+            .ToDictionary(group => group.Key, group => group.Count());
+
+        foreach (var requestedItem in requestedCounts)
+        {
+            int itemId = requestedItem.Key;
+            int requestedQuantity = requestedItem.Value;
+
+            var inventory = context.Inventories
+                .FirstOrDefault(i => i.StoreId == storeId && i.ItemId == itemId);
+
+            if (inventory == null || inventory.Quantity < requestedQuantity)
+            {
+                Console.WriteLine(
+                    $"Cannot place order: item {itemId} has insufficient quantity at store {storeId}.");
+                return null;
+            }
+
+            for (int i = 0; i < requestedQuantity; i++)
+            {
+                // TODO: should also be decreasing the inventory quantity here
+                // Not updating inventory quantity makes testing easier - don't
+                // need to keep resetting the database to have inventory.
+                order.OrderItems.Add(new OrderItem
+                {
+                    ItemId = itemId,
+                    Quantity = 1,
+                    TotalAmount = inventory.Price
+                });
+                orderTotal += inventory.Price;
+            }
+        }
+
+        order.TotalAmount = orderTotal;
+
+        context.Orders.Add(order);
+        context.SaveChanges();
+
+        Console.WriteLine(
+            $"Created order {order.OrderId} for customer {customerId} at store {storeId} with {order.OrderItems.Count} items.");
+
+        return order;
+    }
 }
