@@ -23,5 +23,7 @@ export PARTSTORE_CONNECTION_STRING="Server=localhost;User Id=SA;Password=reallyS
 Then run:
 
 ```bash
-dotnet run --project demo
+dotnet run --project demo [demo|app]
 ```
+where `demo` demonstrates some CRUD functions and `app` demonstrates some
+applicaiton functionality - i.e., user stories.
